@@ -1,0 +1,50 @@
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+Please Login First
+<br>
+
+<!-- For Prototyping == reuse same form for reg/login -->
+Username: <input id="username" ><br>
+Password: <input type="password" id="password" ><br>
+<button onclick="login()">Login</button>
+<button onclick="register()">Register</button>
+
+
+<script>
+        function login(){
+          	uid = document.getElementById("username").value
+          	pasd = document.getElementById("password").value
+
+            $.ajax({
+              url: "/login",
+              type: "POST",
+              data:{"uid":uid, "password":pasd},
+              success: function(data) {
+              	if (data != "True"){
+              		alert(data)
+              	}else{
+              		document.location.reload()
+              	}
+              }
+            });      
+        }
+
+        function register(){
+          	uid = document.getElementById("username").value
+          	pasd = document.getElementById("password").value
+
+            $.ajax({
+              url: "/register",
+              type: "POST",
+              data:{"uid":uid, "password":pasd},
+              success: function(data) {
+              	if (data != "True"){
+              		alert(data)
+              	}else{
+              		alert("You are registered, please login now")
+              		document.location.reload()
+              	}
+              }
+            });      
+        }
+
+</script>	

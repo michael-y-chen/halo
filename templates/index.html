@@ -1,0 +1,99 @@
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+		function loadMysets(){
+            $.ajax({
+              url: "/showmine",
+              type: "GET",
+              success: function(data) {
+                var response
+                try{
+              	   response=JSON.parse(data)
+              	}catch(err){
+                  alert("There is an error, Are you logged out?")
+                  document.location.reload()
+                  return
+                }
+                display="<table><tr><td>Key</td><td>value</td></tr>"
+              	for (i=0;i<response.length;i++){
+              		thisRec=response[i]
+              		display += "<tr><td>"+thisRec["key"]+" </td><td> <input id='val_"+thisRec["key"]+"' value='"+thisRec["value"]+"'> <button id='upd_"+thisRec["key"]+"' onclick='upd(this)'>update</button></td></tr>"
+              	}
+              	display += "<tr><td><input id='key_'> </td><td> <input id='val_'> <button id='upd_' onclick='add(this)'>Add</button></td></tr></table>"
+              	document.getElementById("valuedisplay").innerHTML=display
+
+              }
+            });
+        }
+
+        function upd(button){
+          	theKey = button.id.substring(4)
+          	theValue = document.getElementById("val_"+theKey).value
+            $.ajax({
+              url: "/set",
+              type: "POST",
+              data:{"k":theKey, "v":theValue},
+              success: function(data) {
+              	loadMysets()
+              }
+            });      
+        }
+        function add(button){
+          	theKey = document.getElementById("key_").value
+          	theValue = document.getElementById("val_").value
+            $.ajax({
+              url: "/set",
+              type: "POST",
+              data:{"k":theKey, "v":theValue},
+              success: function(data) {
+              	loadMysets()
+              	console.log (data)
+              }
+            });      
+        }
+        function getVal(obj){
+        	theKey =obj.value
+            $.ajax({
+              url: "/get?k="+theKey,
+              type:"GET",
+              success: function(data) {
+                var response
+                try{
+                   response=JSON.parse(data)
+                }catch(err){
+                  alert("There is an error, Are you logged out?")
+                  document.location.reload()
+                  return
+                }
+              	if (response.length > 0){
+              		document.getElementById('singleVal').innerText = response[0]["value"]
+              	}else{
+              		document.getElementById('singleVal').innerText = ""
+              	}
+              }
+            });   
+        }
+
+        function logout(){
+            $.ajax({
+              url: "/logout",
+              type:"GET",
+              success: function(data) {
+          	document.location.reload()
+              }
+            });
+        }
+	</script>
+</head>
+<body onload="loadMysets()">
+<a href="javascript:logout()">logout</a><br>
+
+All Your Records  
+<div id="valuedisplay">
+</div>
+Enter a key below to see the value:
+<div><input onkeyup="getVal(this)"> = <div id="singleVal" style="display:inline"></div></div>
+
+</body>
+</html>
