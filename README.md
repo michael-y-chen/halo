@@ -16,3 +16,7 @@ Not Implemented:
 5. Since no validation, if a new key matches existing key, it will overwrite, rather than warning
 6. Database is created at /tmp/test.db in sqlite 
 
+TESTING URL:
+ /showall will display both User and Record database entries, it is a straight JSON dump.
+
+
