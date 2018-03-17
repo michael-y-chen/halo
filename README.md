@@ -14,4 +14,5 @@ Not Implemented:
 3. Reusing same form for login and registration -- just to save some typing (per 2, simple GUI)
 4. No password confirmation field (per 1, no validation)
 5. Since no validation, if a new key matches existing key, it will overwrite, rather than warning
+6. Database is created at /tmp/test.db in sqlite 
 
